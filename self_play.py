@@ -15,7 +15,7 @@ import pickle
 import os
 
 # パラメータの準備
-SP_GAME_COUNT = 10 # セルフプレイを行うゲーム数（本家は25000）
+SP_GAME_COUNT = 3 # セルフプレイを行うゲーム数（本家は25000）
 SP_TEMPERATURE = 1.0 # ボルツマン分布の温度パラメータ
 
 # 先手プレイヤーの価値
@@ -32,6 +32,7 @@ def write_data(history):
     path = './data/{:04}{:02}{:02}{:02}{:02}{:02}.history'.format(
         now.year, now.month, now.day, now.hour, now.minute, now.second)
     with open(path, mode='wb') as f:
+        #print(history)
         pickle.dump(history, f)
 
 # 1ゲームの実行
@@ -76,6 +77,7 @@ def self_play():
 
     # ベストプレイヤーのモデルの読み込み
     model = load_model('./model/best.h5')
+    #print(model)
 
     # 複数回のゲームの実行
     for i in range(SP_GAME_COUNT):

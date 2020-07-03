@@ -35,6 +35,7 @@ def train_network():
 
     # ベストプレイヤーのモデルの読み込み
     model = load_model('./model/best.h5')
+    #print("model2")
 
     # モデルのコンパイル
     model.compile(loss=['categorical_crossentropy', 'mse'], optimizer='adam')
@@ -59,6 +60,7 @@ def train_network():
 
     # 最新プレイヤーのモデルの保存
     model.save('./model/latest.h5')
+    #print("model3")
 
     # モデルの破棄
     K.clear_session()

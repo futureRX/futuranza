@@ -11,7 +11,7 @@ from evaluate_network import evaluate_network
 # デュアルネットワークの作成
 dual_network()
 
-for i in range(3):
+for i in range(2):
     print('Train',i,'====================')
     # セルフプレイ部
     self_play()

@@ -11,13 +11,17 @@ from pathlib import Path
 import numpy as np
 
 # パラメータの準備
-PV_EVALUATE_COUNT = 50 # 1推論あたりのシミュレーション回数（本家は1600）
+PV_EVALUATE_COUNT = 10 # 1推論あたりのシミュレーション回数（本家は1600）
 
 # 推論
 def predict(model, state):
     # 推論のための入力テ゛ータのシェイフ゜の変換
     a, b, c = DN_INPUT_SHAPE
+    #print(a)
+    #print(b)
+    #print(c)
     x = np.array(state.pieces_array())
+    #print(len(state.pieces_array()))
     x = x.reshape(c, a, b).transpose(1, 2, 0).reshape(1, a, b, c)
 
     # 推論
