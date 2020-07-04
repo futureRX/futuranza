@@ -3,6 +3,8 @@
 # ====================
 
 # パッケージのインポート
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='1'
 from dual_network import dual_network
 from self_play import self_play
 from train_network import train_network

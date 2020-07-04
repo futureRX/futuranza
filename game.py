@@ -68,7 +68,7 @@ class State:
         for i in range(9):
             nifu = 0
             #print(i,":check")
-            for j in range(8):
+            for j in range(9):
                 if self.enemy_pieces[(i+9*j)] == 1:
                     #print(j,(i+9*j),"にあります")
                     nifu = nifu +1
@@ -141,9 +141,44 @@ class State:
 
             # 持ち駒の配置時
             if self.pieces[p] == 0 and self.enemy_pieces[80 - p] == 0:
+
                 for capture in range(1, 9):#持ち駒の参照
+                    #print(p,capture)
+                    if capture == 1 :
+
+                        if p >8 :#歩、一段の禁じ手回避
+
+                            #二歩の回避
+                            i = p % 9
+                            nifucheck = True
+                            for j in range(9):
+                                if self.pieces[(i + 9 * j)] == 1:
+                                    nifucheck =False
+                            if nifucheck==True:
+                                if self.pieces[80 + capture] != 0:
+                                    #print("hu")
+                                    # print(self.position_to_action(p, 74 - 1 + capture))
+                                    actions.append(self.position_to_action(p, 74 - 1 + capture))
+
+                    elif capture == 8 :
+
+                        if p >8 :#香車、一段の禁じ手回避
+
+                            if self.pieces[80 + capture] != 0:
+                                #print("kyou")
+                                # print(self.position_to_action(p, 74 - 1 + capture))
+                                actions.append(self.position_to_action(p, 74 - 1 + capture))
+                    elif capture == 7:
+
+                        if p > 17:#桂馬、一、二段の禁じ手回避
+
+                            if self.pieces[80 + capture] != 0:
+                                print("kei")
+                                # print(self.position_to_action(p, 74 - 1 + capture))
+                                actions.append(self.position_to_action(p, 74 - 1 + capture))
                     #print(capture)
-                    if self.pieces[80 + capture] != 0:
+                    elif self.pieces[80 + capture] != 0:
+                        #print("clear")
                         #print(self.position_to_action(p, 74 - 1 + capture))
                         actions.append(self.position_to_action(p, 74 - 1 + capture))
         #acts=[]
@@ -188,9 +223,10 @@ class State:
                     p = x + y * 9
                     # 移動可能時は合法actionとして追加
                     if 0 <= x and x <= 8 and 0 <= y and y <= 8 and self.pieces[p] == 0 and self.enemy_pieces[80 - p]==0:
-                        directions.append(31+(8*n)+i+1)
+                        directions.append(41+(8*n)+i+1)
                     else:
                         break
+            #print(directions)
         elif piece_type == 4:  # ou
             directions = [0, 1, 2, 3, 4, 5, 6, 7]
         elif piece_type == 5:  # kin
@@ -274,9 +310,13 @@ class State:
             position_src = x + y * 9
 
             # 駒の移動
-            print(position_dst)
-            print(position_src)
-            print(state.depth,"手：",state.pieces[position_src],"を",x,",",y,"へ")
+            #print(position_dst)
+            #print(position_src)
+            hzkr0 = ('', '歩', '角', '飛', '王', '金', '銀', '桂', '香', '', 'と', '馬', '龍', '', '', 'NG', 'KM', 'KY',)
+            if self.depth%2 == 0:
+                print(state.depth,"手*",9-position_dst%9,int(position_dst/9)+1,hzkr0[state.pieces[position_src]])
+            elif self.depth%2 == 1:
+                print(state.depth,"手：",9-(80-position_dst)%9,int((80-position_dst)/9)+1,hzkr0[state.pieces[position_src]])
             state.pieces[position_dst] = state.pieces[position_src]
             state.pieces[position_src] = 0
 
