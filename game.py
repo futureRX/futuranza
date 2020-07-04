@@ -101,7 +101,7 @@ class State:
         # プレイヤー毎のデュアルネットワークの入力の2次元配列の取得
         def pieces_array_of(pieces):
             table_list = []
-            # 0:ヒヨコ, 1:ゾウ, 2:キリン, 3:ライオン,
+
             for j in range(1, 8):
                 table = [0] * 81
                 table_list.append(table)
@@ -109,15 +109,10 @@ class State:
                     if pieces[i] == j:
                         table[i] = 1
 
-                #print(table_list)
-
-
-            # 4:ヒヨコの持ち駒, 5:ゾウの持ち駒, 6:キリンの持ち駒
             for j in range(1, 8):#持ち駒参照
                 flag = 1 if pieces[80 + j] > 0 else 0
                 table = [flag] * 81
                 table_list.append(table)
-            #print(table_list)
             return table_list
 
 
@@ -127,12 +122,12 @@ class State:
     # 駒の移動先と移動元を行動に変換
     def position_to_action(self, position, direction):
         #print(position,":",direction,":",position*80+direction)
-        return position * 200 + direction
+        return position * 100 + direction
 
     # 行動を駒の移動先と移動元に変換
     def action_to_position(self, action):
         #print(action,":",(self.pieces[int(action / 80)],"を", self.dxy[action % 80]))
-        return (int(action / 200), action % 200)
+        return (int(action / 100), action % 100)
 
 
     # 合法手のリストの取得
@@ -159,6 +154,7 @@ class State:
         """
         #print(acts)
         #print(actions)
+        #print(list(actions))
         return actions
 
     # 駒の移動時の合法手のリストの取得
@@ -214,11 +210,32 @@ class State:
                 else:
                     break
         elif piece_type == 11:  # to
-            directions = [0]
+            directions = [0, 1, 2, 4, 6, 7]
         elif piece_type == 12:  # uma
-            directions = [0]
+            directions = [2,4,6,8]
+            for n in range(4):
+                for i in range(8):
+                    x = position_src % 9 + self.dxy[9+(8*n)+i+1][0]
+                    y = int(position_src / 9) + self.dxy[9+(8*n)+i+1][1]
+                    p = x + y * 9
+                    # 移動可能時は合法actionとして追加
+                    if 0 <= x and x <= 8 and 0 <= y and y <= 8 and self.pieces[p] == 0 and self.enemy_pieces[80 - p]==0:
+                        directions.append(9+(8*n)+i+1)
+                    else:
+                        break
         elif piece_type == 13:  # ryu
-            directions = [0, 1, 2, 3, 4, 5, 6, 7]
+            directions = [1, 3, 5, 7]
+            for n in range(4):
+                for i in range(8):
+                    x = position_src % 9 + self.dxy[41+(8*n)+i+1][0]
+                    y = int(position_src / 9) + self.dxy[41+(8*n)+i+1][1]
+
+                    p = x + y * 9
+                    # 移動可能時は合法actionとして追加
+                    if 0 <= x and x <= 8 and 0 <= y and y <= 8 and self.pieces[p] == 0 and self.enemy_pieces[80 - p]==0:
+                        directions.append(31+(8*n)+i+1)
+                    else:
+                        break
         elif piece_type == 16:  # narigin
             directions = [0, 1, 2, 4, 6, 7]
         elif piece_type == 17:  # narikei
