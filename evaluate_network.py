@@ -12,7 +12,7 @@ from shutil import copy
 import numpy as np
 
 # パラメータの準備
-EN_GAME_COUNT = 10 # 1評価あたりのゲーム数（本家は400）
+EN_GAME_COUNT = 5 # 1評価あたりのゲーム数（本家は400）
 EN_TEMPERATURE = 1.0 # ボルツマン分布の温度
 
 # 先手プレイヤーのポイント
@@ -20,6 +20,8 @@ def first_player_point(ended_state):
     # 1:先手勝利, 0:先手敗北, 0.5:引き分け
     if ended_state.is_lose():
         return 0 if ended_state.is_first_player() else 1
+    if ended_state.is_win():
+        return 1 if ended_state.is_first_player() else 0
     return 0.5
 
 # 1ゲームの実行

@@ -12,7 +12,7 @@ import numpy as np
 import pickle
 
 # パラメータの準備
-RN_EPOCHS = 100 # 学習回数
+RN_EPOCHS = 10 # 学習回数
 
 # 学習データの読み込み
 def load_data():

@@ -12,7 +12,7 @@ import os
 # パラメータの準備
 DN_FILTERS  = 128 # 畳み込み層のカーネル数（本家は256）
 DN_RESIDUAL_NUM =  16 # 残差ブロックの数（本家は19）
-DN_INPUT_SHAPE = (9, 9, 20) # 入力シェイプ
+DN_INPUT_SHAPE = (9, 9, 28) # 入力シェイプ
 DN_OUTPUT_SIZE = 6480 # 行動数(駒の移動先(81)*駒の移動元(80))
 
 """
