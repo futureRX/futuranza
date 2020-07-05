@@ -3,8 +3,6 @@
 # ====================
 
 # パッケージのインポート
-import warnings
-warnings.filterwarnings("ignore", category=DeprecationWarning)
 from dual_network import dual_network
 from self_play import self_play
 from train_network import train_network
@@ -13,7 +11,7 @@ from evaluate_network import evaluate_network
 # デュアルネットワークの作成
 dual_network()
 
-for i in range(5):
+for i in range(3):
     print('Train',i,'====================')
     # セルフプレイ部
     self_play()
