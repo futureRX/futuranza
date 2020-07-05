@@ -3,8 +3,8 @@
 # ====================
 
 # パッケージのインポート
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+#import os
+#os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 from tensorflow.keras.layers import Activation, Add, BatchNormalization, Conv2D, Dense, GlobalAveragePooling2D, Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2

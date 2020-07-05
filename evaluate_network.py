@@ -3,8 +3,8 @@
 # ====================
 
 # パッケージのインポート
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+#import os
+#os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 from game import State
 from pv_mcts import pv_mcts_action
 from tensorflow.keras.models import load_model

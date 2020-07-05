@@ -314,11 +314,12 @@ class State:
             # 駒の移動
             #print(position_dst)
             #print(position_src)
+            """
             if self.depth%2 == 0:
                 print(state.depth,"手*",9-position_dst%9,int(position_dst/9)+1,hzkr0[state.pieces[position_src]])
             elif self.depth%2 == 1:
                 print(state.depth,"手：",9-(80-position_dst)%9,int((80-position_dst)/9)+1,hzkr0[state.pieces[position_src]])
-
+            """
             #歩と香車は、一段目で強制的に成る
             if position_dst < 9 and (state.pieces[position_src]==1 or state.pieces[position_src]==8):
                 state.pieces[position_dst] = state.pieces[position_src]+10
@@ -343,7 +344,7 @@ class State:
             capture = position_src - 73
             xx = position_dst%9
             yy = int(position_dst/9)
-            print(state.depth,"手：",xx,yy,hzkr0[capture],"打")
+            #print(state.depth,"手：",xx,yy,hzkr0[capture],"打")
             state.pieces[position_dst] = capture
             state.pieces[80 + capture] -= 1  # 持ち駒-1
 

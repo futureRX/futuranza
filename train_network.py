@@ -3,8 +3,8 @@
 # ====================
 
 # パッケージのインポート
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+#import os
+#os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 from dual_network import DN_INPUT_SHAPE
 from tensorflow.keras.callbacks import LearningRateScheduler, LambdaCallback
 from tensorflow.keras.models import load_model

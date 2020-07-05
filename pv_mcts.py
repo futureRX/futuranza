@@ -3,8 +3,8 @@
 # ====================
 
 # パッケージのインポート
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+#import os
+#os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 from game import State
 from dual_network import DN_INPUT_SHAPE
 from math import sqrt
