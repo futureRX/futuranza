@@ -26,15 +26,27 @@ class GameUI(tk.Frame):
         self.select = -1  # 選択(-1:なし, 0～11:マス, 12～14:持ち駒)
 
         # 方向定数
-        self.dxy = ((0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1))
+        self.dxy = ((0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (1, -2), (-1, -2),
+                    (1, -1), (2, -2), (3, -3), (4, -4), (5, -5), (6, -6), (7, -7), (8, -8),
+                    (-1, 1), (-2, 2), (-3, 3), (-4, 4), (-5, 5), (-6, 6), (-7, 7), (-8, 8),
+                    (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8),
+                    (-1, -1), (-2, -2), (-3, -3), (-4, -4), (-5, -5), (-6, -6), (-7, -7), (-8, -8),
+                    (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0), (8, 0),
+                    (-1, 0), (-2, 0), (-3, 0), (-4, 0), (-5, 0), (-6, 0), (-7, 0), (-8, 0),
+                    (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8),
+                    (0, -1), (0, -2), (0, -3), (0, -4), (0, -5), (0, -6), (0, -7), (0, -8))
+
+
+
+        #self.dxy = ((0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1))
 
         # PV MCTSで行動選択を行う関数の生成
         self.next_action = pv_mcts_action(model, 0.0)
 
         # イメージの準備
         self.images = [(None, None, None, None)]
-        for i in range(1, 5):
-            image = Image.open('piece{}.png'.format(i))
+        for i in range(1, 19):
+            image = Image.open('koma_gif/piece{}.gif'.format(i))
             self.images.append((
                 ImageTk.PhotoImage(image),
                 ImageTk.PhotoImage(image.rotate(180)),
@@ -42,7 +54,7 @@ class GameUI(tk.Frame):
                 ImageTk.PhotoImage(image.resize((40, 40)).rotate(180))))
 
         # キャンバスの生成
-        self.c = tk.Canvas(self, width=240, height=400, highlightthickness=0)
+        self.c = tk.Canvas(self, width=720, height=800, highlightthickness=0)
         self.c.bind('<Button-1>', self.turn_of_human)
         self.c.pack()
 
@@ -63,16 +75,16 @@ class GameUI(tk.Frame):
 
         # 持ち駒の種類の取得
         captures = []
-        for i in range(3):
-            if self.state.pieces[12 + i] >= 2: captures.append(1 + i)
-            if self.state.pieces[12 + i] >= 1: captures.append(1 + i)
+        for i in range(8):
+            if self.state.pieces[81 + i] >= 2: captures.append(1 + i)
+            if self.state.pieces[81 + i] >= 1: captures.append(1 + i)
 
-        # 駒の選択と移動の位置の計算(0?11:マス, 12?14:持ち駒)
+        # 駒の選択と移動の位置の計算(0-80:マス, 81-88:持ち駒)
         p = int(event.x / 80) + int((event.y - 40) / 80) * 3
-        if 40 <= event.y and event.y <= 360:
+        if 40 <= event.y and event.y <= 760:
             select = p
-        elif event.x < len(captures) * 40 and event.y > 360:
-            select = 12 + int(event.x / 40)
+        elif event.x < len(captures) * 40 and event.y > 760:
+            select = 81 + int(event.x / 40)
         else:
             return
 
@@ -84,13 +96,13 @@ class GameUI(tk.Frame):
 
         # 駒の選択と移動を行動に変換
         action = -1
-        if select < 12:
+        if select < 81:
             # 駒の移動時
-            if self.select < 12:
+            if self.select < 81:
                 action = self.state.position_to_action(p, self.position_to_direction(self.select, p))
             # 持ち駒の配置時
             else:
-                action = self.state.position_to_action(p, 8 - 1 + captures[self.select - 12])
+                action = self.state.position_to_action(p, 74 - 1 + captures[self.select - 81])
 
         # 合法手でない時
         if not (action in self.state.legal_actions()):
@@ -121,26 +133,26 @@ class GameUI(tk.Frame):
 
     # 駒の移動先を駒の移動方向に変換
     def position_to_direction(self, position_src, position_dst):
-        dx = position_dst % 3 - position_src % 3
-        dy = int(position_dst / 3) - int(position_src / 3)
-        for i in range(8):
+        dx = position_dst % 9 - position_src % 9
+        dy = int(position_dst / 9) - int(position_src / 9)
+        for i in range(74):
             if self.dxy[i][0] == dx and self.dxy[i][1] == dy: return i
         return 0
 
     # 駒の描画
     def draw_piece(self, index, first_player, piece_type):
-        x = (index % 3) * 80
-        y = int(index / 3) * 80 + 40
+        x = (index % 9) * 80
+        y = int(index / 9) * 80 + 40
         index = 0 if first_player else 1
         self.c.create_image(x, y, image=self.images[piece_type][index], anchor=tk.NW)
 
     # 持ち駒の描画
     def draw_capture(self, first_player, pieces):
-        index, x, dx, y = (2, 0, 40, 360) if first_player else (3, 200, -40, 0)
+        index, x, dx, y = (2, 0, 40, 760) if first_player else (3, 680, -40, 0)
         captures = []
-        for i in range(3):
-            if pieces[12 + i] >= 2: captures.append(1 + i)
-            if pieces[12 + i] >= 1: captures.append(1 + i)
+        for i in range(8):
+            if pieces[81 + i] >= 2: captures.append(1 + i)
+            if pieces[81 + i] >= 1: captures.append(1 + i)
         for i in range(len(captures)):
             self.c.create_image(x + dx * i, y, image=self.images[captures[i]][index], anchor=tk.NW)
 
@@ -155,15 +167,15 @@ class GameUI(tk.Frame):
     def on_draw(self):
         # マス目
         self.c.delete('all')
-        self.c.create_rectangle(0, 0, 240, 400, width=0.0, fill='#EDAA56')
-        for i in range(1, 3):
-            self.c.create_line(i * 80 + 1, 40, i * 80, 360, width=2.0, fill='#000000')
-        for i in range(5):
-            self.c.create_line(0, 40 + i * 80, 240, 40 + i * 80, width=2.0, fill='#000000')
+        self.c.create_rectangle(0, 0, 720, 800, width=0.0, fill='#EDAA56')
+        for i in range(1, 9):
+            self.c.create_line(i * 80 + 1, 40, i * 80, 760, width=2.0, fill='#000000')
+        for i in range(10):
+            self.c.create_line(0, 40 + i * 80, 720, 40 + i * 80, width=2.0, fill='#000000')
 
         # 駒
-        for p in range(12):
-            p0, p1 = (p, 11 - p) if self.state.is_first_player() else (11 - p, p)
+        for p in range(81):
+            p0, p1 = (p, 80 - p) if self.state.is_first_player() else (80 - p, p)
             if self.state.pieces[p0] != 0:
                 self.draw_piece(p, self.state.is_first_player(), self.state.pieces[p0])
             if self.state.enemy_pieces[p1] != 0:
@@ -174,13 +186,14 @@ class GameUI(tk.Frame):
         self.draw_capture(not self.state.is_first_player(), self.state.enemy_pieces)
 
         # 選択カーソル
-        if 0 <= self.select and self.select < 12:
-            self.draw_cursor(int(self.select % 3) * 80, int(self.select / 3) * 80 + 40, 80)
+        if 0 <= self.select and self.select <81:
+            self.draw_cursor(int(self.select % 9) * 80, int(self.select / 9) * 80 + 40, 80)
         elif 12 <= self.select:
-            self.draw_cursor((self.select - 12) * 40, 360, 40)
+            self.draw_cursor((self.select - 81) * 40, 760, 40)
 
 # ゲームUIの実行
 f = GameUI(model=model)
 f.pack()
 f.mainloop()
+
 

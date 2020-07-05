@@ -3,6 +3,8 @@
 # ====================
 
 # パッケージのインポート
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 from game import State
 from pv_mcts import pv_mcts_action
 from tensorflow.keras.models import load_model

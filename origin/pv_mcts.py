@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 
 # パラメータの準備
-PV_EVALUATE_COUNT = 50 # 1推論あたりのシミュレーション回数（本家は1600）
+PV_EVALUATE_COUNT = 100 # 1推論あたりのシミュレーション回数（本家は1600）
 
 # 推論
 def predict(model, state):
