@@ -68,7 +68,7 @@ def dual_network():
 
     # モデルの保存
     os.makedirs('./model/', exist_ok=True) # フォルダがない時は生成
-    model.save('./model/3.h5') # ベストプレイヤーのモデル
+    model.save('./model/best.h5') # ベストプレイヤーのモデル
 
     # モデルの破棄
     K.clear_session()

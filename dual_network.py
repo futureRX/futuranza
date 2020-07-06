@@ -70,7 +70,7 @@ def residual_block():
 # デュアルネットワークの作成
 def dual_network():
     # モデル作成済みの場合は無処理
-    if os.path.exists('model/3.h5'):
+    if os.path.exists('model/best.h5'):
         return
 
     # 入力層
@@ -101,7 +101,7 @@ def dual_network():
 
     # モデルの保存
     os.makedirs('./model/', exist_ok=True) # フォルダがない時は生成
-    model.save('./model/3.h5') # ベストプレイヤーのモデル
+    model.save('./model/best.h5') # ベストプレイヤーのモデル
 
     # モデルの破棄
     K.clear_session()
