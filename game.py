@@ -353,6 +353,7 @@ class State:
         w = state.pieces
         state.pieces = state.enemy_pieces
         state.enemy_pieces = w
+        #print("一手")
         return state
 
     # 先手かどうか

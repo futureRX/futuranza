@@ -14,7 +14,7 @@ from shutil import copy
 import numpy as np
 
 # パラメータの準備
-EN_GAME_COUNT = 100 # 1評価あたりのゲーム数（本家は400）
+EN_GAME_COUNT = 5 # 1評価あたりのゲーム数（本家は400）
 EN_TEMPERATURE = 1.0 # ボルツマン分布の温度
 
 # 先手プレイヤーのポイント
@@ -49,7 +49,7 @@ def play(next_actions):
 
 # ベストプレイヤーの交代
 def update_best_player():
-    copy('./model/latest.h5', './model/best.h5')
+    copy('./model/latest.h5', 'model/3.h5')
     print('Change BestPlayer')
 
 # ネットワークの評価
@@ -58,7 +58,7 @@ def evaluate_network():
     model0 = load_model('./model/latest.h5')
 
     # ベストプレイヤーのモデルの読み込み
-    model1 = load_model('./model/best.h5')
+    model1 = load_model('model/3.h5')
 
     # PV MCTSで行動選択を行う関数の生成
     next_action0 = pv_mcts_action(model0, EN_TEMPERATURE)

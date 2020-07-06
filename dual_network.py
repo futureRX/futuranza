@@ -13,7 +13,7 @@ import os
 
 # パラメータの準備
 DN_FILTERS  = 256 # 畳み込み層のカーネル数（本家は256）
-DN_RESIDUAL_NUM =  19 # 残差ブロックの数（本家は19）
+DN_RESIDUAL_NUM = 19 # 残差ブロックの数（本家は19）
 DN_INPUT_SHAPE = (9, 9, 28) # 入力シェイプ
 DN_OUTPUT_SIZE = 8100 # 行動数(駒の移動先(81)*駒の移動元(80))
 
@@ -40,13 +40,37 @@ def residual_block():
         x = BatchNormalization()(x)
         x = Add()([x, sc])
         x = Activation('relu')(x)
+        sc = x
+        x = conv(DN_FILTERS)(x)
+        x = BatchNormalization()(x)
+        x = Activation('relu')(x)
+        x = conv(DN_FILTERS)(x)
+        x = BatchNormalization()(x)
+        x = Add()([x, sc])
+        x = Activation('relu')(x)
+        sc = x
+        x = conv(DN_FILTERS)(x)
+        x = BatchNormalization()(x)
+        x = Activation('relu')(x)
+        x = conv(DN_FILTERS)(x)
+        x = BatchNormalization()(x)
+        x = Add()([x, sc])
+        x = Activation('relu')(x)
+        sc = x
+        x = conv(DN_FILTERS)(x)
+        x = BatchNormalization()(x)
+        x = Activation('relu')(x)
+        x = conv(DN_FILTERS)(x)
+        x = BatchNormalization()(x)
+        x = Add()([x, sc])
+        x = Activation('relu')(x)
         return x
     return f
 
 # デュアルネットワークの作成
 def dual_network():
     # モデル作成済みの場合は無処理
-    if os.path.exists('./model/best.h5'):
+    if os.path.exists('model/3.h5'):
         return
 
     # 入力層
@@ -77,7 +101,7 @@ def dual_network():
 
     # モデルの保存
     os.makedirs('./model/', exist_ok=True) # フォルダがない時は生成
-    model.save('./model/best.h5') # ベストプレイヤーのモデル
+    model.save('./model/3.h5') # ベストプレイヤーのモデル
 
     # モデルの破棄
     K.clear_session()

@@ -17,7 +17,7 @@ import pickle
 import os
 
 # パラメータの準備
-SP_GAME_COUNT = 10 # セルフプレイを行うゲーム数（本家は25000）
+SP_GAME_COUNT = 3 # セルフプレイを行うゲーム数（本家は25000）
 SP_TEMPERATURE = 1.0 # ボルツマン分布の温度パラメータ
 
 # 先手プレイヤーの価値
@@ -78,7 +78,7 @@ def self_play():
     history = []
 
     # ベストプレイヤーのモデルの読み込み
-    model = load_model('./model/best.h5')
+    model = load_model('model/3.h5')
     #print(model)
 
     # 複数回のゲームの実行

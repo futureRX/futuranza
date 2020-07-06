@@ -14,7 +14,7 @@ import numpy as np
 import pickle
 
 # パラメータの準備
-RN_EPOCHS = 100 # 学習回数
+RN_EPOCHS = 10 # 学習回数
 
 # 学習データの読み込み
 def load_data():
@@ -36,7 +36,7 @@ def train_network():
     y_values = np.array(y_values)
 
     # ベストプレイヤーのモデルの読み込み
-    model = load_model('./model/best.h5')
+    model = load_model('model/3.h5')
     #print("model2")
 
     # モデルのコンパイル
