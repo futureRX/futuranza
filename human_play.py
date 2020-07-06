@@ -82,7 +82,7 @@ class GameUI(tk.Frame):
             if self.state.pieces[81 + i] >= 1: captures.append(1 + i)
 
         # 駒の選択と移動の位置の計算(0-80:マス, 81-88:持ち駒)
-        p = int(event.x / 80) + int((event.y - 40) / 80) * 3
+        p = int(event.x / 80) + int((event.y - 40) / 80) * 9
         if 40 <= event.y and event.y <= 760:
             select = p
         elif event.x < len(captures) * 40 and event.y > 760:
@@ -143,8 +143,8 @@ class GameUI(tk.Frame):
 
     # 駒の描画
     def draw_piece(self, index, first_player, piece_type):
-        x = (index % 9) * 80
-        y = int(index / 9) * 80 + 40
+        x = (index % 9) * 80 + 20
+        y = int(index / 9) * 80 + 40 + 20
         index = 0 if first_player else 1
         self.c.create_image(x, y, image=self.images[piece_type][index], anchor=tk.NW)
 
@@ -190,7 +190,7 @@ class GameUI(tk.Frame):
         # 選択カーソル
         if 0 <= self.select and self.select <81:
             self.draw_cursor(int(self.select % 9) * 80, int(self.select / 9) * 80 + 40, 80)
-        elif 12 <= self.select:
+        elif 81 <= self.select:
             self.draw_cursor((self.select - 81) * 40, 760, 40)
 
 # ゲームUIの実行
