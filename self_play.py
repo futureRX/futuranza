@@ -17,7 +17,7 @@ import pickle
 import os
 
 # パラメータの準備
-SP_GAME_COUNT = 100 # セルフプレイを行うゲーム数（本家は25000）
+SP_GAME_COUNT = 10 # セルフプレイを行うゲーム数（本家は25000）
 SP_TEMPERATURE = 1.0 # ボルツマン分布の温度パラメータ
 
 # 先手プレイヤーの価値
